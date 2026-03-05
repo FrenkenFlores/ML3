@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block title %}Profile - Flask App{% endblock %}
+
+{% block content %}
+    <div class="profile-container">
+        <div class="profile-card">
+            <h1>User Profile</h1>
+            
+            <div class="profile-info">
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>User ID:</strong> {{ user.user_id }}</p>
+            </div>
+            
+            <div class="profile-actions">
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-secondary">Logout</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

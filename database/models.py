@@ -9,7 +9,7 @@ from datetime import datetime
 
 # Database configuration
 import os
-DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://postgres:password@localhost:5432/logs_classification')
+DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///app.db')
 
 # Create SQLAlchemy components
 Base = declarative_base()
@@ -50,11 +50,9 @@ class RawData(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
-    # Relationships
     user = relationship('User', back_populates='rawdata')
-    datasets = relationship('Dataset', back_populates='rawdata', cascade='all, delete-orphan')
 
-# Label model
+# Labels model
 class Label(Base):
     __tablename__ = 'labels'
     
@@ -64,9 +62,6 @@ class Label(Base):
     color = Column(String(7), default='#007bff')
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    
-    # Relationships
-    datasets = relationship('Dataset', back_populates='label', cascade='all, delete-orphan')
 
 # Dataset model
 class Dataset(Base):
@@ -79,47 +74,8 @@ class Dataset(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
-    # Unique constraint to prevent duplicate rawdata-label pairs
     __table_args__ = (UniqueConstraint('rawdata_id', 'label_id', name='_rawdata_label_uc'),)
     
-    # Relationships
-    rawdata = relationship('RawData', back_populates='datasets')
-    label = relationship('Label', back_populates='datasets')
-    user = relationship('User', back_populates='datasets')
-
-# Create all tables
-Base.metadata.create_all(bind=engine)
-
-# Helper functions
-
-def create_user(db, username: str, email: str, password_hash: str):
-    """Create a new user."""
-    user = User(username=username, email=email, password_hash=password_hash)
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return user
-
-def create_label(db, name: str, description: str = None, color: str = '#007bff'):
-    """Create a new label."""
-    label = Label(name=name, description=description, color=color)
-    db.add(label)
-    db.commit()
-    db.refresh(label)
-    return label
-
-def create_raw_data(db, user_id: int, log_text: str, source: str = None):
-    """Create new raw data entry."""
-    raw_data = RawData(user_id=user_id, log_text=log_text, source=source)
-    db.add(raw_data)
-    db.commit()
-    db.refresh(raw_data)
-    return raw_data
-
-def create_dataset(db, rawdata_id: int, label_id: int, user_id: int):
-    """Create a new dataset entry."""
-    dataset = Dataset(rawdata_id=rawdata_id, label_id=label_id, user_id=user_id)
-    db.add(dataset)
-    db.commit()
-    db.refresh(dataset)
-    return dataset
+    rawdata = relationship('RawData')
+    label = relationship('Label')
+    user = relationship('User')
