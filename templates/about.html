@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Flask App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about" class="active">About</a>
+            <a href="/api/data" target="_blank">API</a>
+        </nav>
+    </header>
+    
+    <main>
+        <section class="about">
+            <h1>About Flask App</h1>
+            <p>This is a simple Flask application built as a foundation for web development projects.</p>
+            
+            <h2>Features</h2>
+            <ul>
+                <li>Simple and lightweight</li>
+                <li>Easy to extend and customize</li>
+                <li>RESTful API support</li>
+                <li>Template rendering with Jinja2</li>
+                <li>Static file serving</li>
+            </ul>
+            
+            <h2>Getting Started</h2>
+            <p>To run this application:</p>
+            <ol>
+                <li>Install dependencies: <code>pip install -r requirements.txt</code></li>
+                <li>Run the app: <code>python app.py</code></li>
+                <li>Visit <a href="http://localhost:5000" target="_blank">http://localhost:5000</a></li>
+            </ol>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2026 Flask App</p>
+    </footer>
+    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
