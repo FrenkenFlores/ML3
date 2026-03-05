@@ -1,53 +1,89 @@
+"""
+Configuration file for logs classification app.
+"""
+
 import os
+from pathlib import Path
 
-class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'your-secret-key-change-this-in-production'
-    FLASK_ENV = os.environ.get('FLASK_ENV', 'development')
-    DEBUG = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
-    
-    # Database configuration
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///app.db')
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-    
-    # Security settings
-    SESSION_COOKIE_SECURE = True if FLASK_ENV == 'production' else False
-    SESSION_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_SAMESITE = 'Lax'
-    
-    # CORS settings
-    CORS_ORIGINS = os.environ.get('CORS_ORIGINS', '*')
-    
-    # API settings
-    API_VERSION = 'v1'
-    API_PREFIX = f'/api/{API_VERSION}'
-    
-    @staticmethod
-    def init_app(app):
-        """Initialize the app with configuration settings"""
-        app.config['SECRET_KEY'] = Config.SECRET_KEY
-        app.config['SQLALCHEMY_DATABASE_URI'] = Config.SQLALCHEMY_DATABASE_URI
-        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = Config.SQLALCHEMY_TRACK_MODIFICATIONS
-        app.config['SESSION_COOKIE_SECURE'] = Config.SESSION_COOKIE_SECURE
-        app.config['SESSION_COOKIE_HTTPONLY'] = Config.SESSION_COOKIE_HTTPONLY
-        app.config['SESSION_COOKIE_SAMESITE'] = Config.SESSION_COOKIE_SAMESITE
+# Base directory
+BASE_DIR = Path(__file__).parent
 
-class DevelopmentConfig(Config):
+# Database configuration
+DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://postgres:password@localhost:5432/logs_classification')
+DB_HOST = os.getenv('DB_HOST', 'localhost')
+DB_PORT = os.getenv('DB_PORT', '5432')
+DB_NAME = os.getenv('DB_NAME', 'ml3')
+DB_USER = os.getenv('DB_USER', 'admin')
+DB_PASSWORD = os.getenv('DB_PASSWORD', 'admin')
+
+# Flask configuration
+FLASK_ENV = os.getenv('FLASK_ENV', 'development')
+SECRET_KEY = os.getenv('SECRET_KEY', 'your-secret-key-change-in-production')
+
+# File upload configuration
+UPLOAD_FOLDER = BASE_DIR / 'uploads'
+ALLOWED_EXTENSIONS = {'txt', 'log', 'csv'}
+MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB
+
+# API configuration
+API_PREFIX = '/api'
+API_VERSION = 'v1'
+
+# CORS configuration
+CORS_ORIGINS = os.getenv('CORS_ORIGINS', '*')
+
+# Logging configuration
+LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
+LOG_FILE = BASE_DIR / 'logs' / 'app.log'
+
+# Create directories if they don't exist
+UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
+LOG_DIR = BASE_DIR / 'logs'
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+
+# Environment-specific settings
+if FLASK_ENV == 'development':
     DEBUG = True
-    FLASK_ENV = 'development'
-    
-class ProductionConfig(Config):
+    TESTING = False
+elif FLASK_ENV == 'testing':
     DEBUG = False
-    FLASK_ENV = 'production'
-    SECRET_KEY = os.environ.get('SECRET_KEY')
-    
-class TestingConfig(Config):
     TESTING = True
-    DEBUG = True
-    FLASK_ENV = 'testing'
-    
-config = {
-    'development': DevelopmentConfig,
-    'production': ProductionConfig,
-    'testing': TestingConfig,
-    'default': DevelopmentConfig
+else:
+    DEBUG = False
+    TESTING = False
+
+# Security settings
+JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'your-jwt-secret-key-change-in-production')
+JWT_ALGORITHM = 'HS256'
+JWT_EXPIRE_MINUTES = 30
+
+# Email configuration
+MAIL_SERVER = os.getenv('MAIL_SERVER', 'smtp.gmail.com')
+MAIL_PORT = int(os.getenv('MAIL_PORT', '587'))
+MAIL_USE_TLS = os.getenv('MAIL_USE_TLS', 'true').lower() in ['true', '1', 't']
+MAIL_USERNAME = os.getenv('MAIL_USERNAME')
+MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
+
+# Redis configuration
+REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
+
+# Celery configuration
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
+
+# ML model configuration
+MODEL_PATH = BASE_DIR / 'models' / 'classification_model.pkl'
+MODEL_PATH.mkdir(parents=True, exist_ok=True)
+
+# Default label colors
+DEFAULT_LABEL_COLORS = {
+    'Error': '#dc3545',
+    'Warning': '#ffc107',
+    'Info': '#17a2b8',
+    'Debug': '#6c757d',
+    'Critical': '#343a40'
 }
+
+# Pagination
+DEFAULT_PAGE_SIZE = 20
+MAX_PAGE_SIZE = 100
