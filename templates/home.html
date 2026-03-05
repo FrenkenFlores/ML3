@@ -1,15 +1,73 @@
 <!DOCTYPE html>
 {% extends "base.html" %}
 
-{% block title %}Flask App - Home</title>{% endblock %}
+{% block title %}Flask App - Dashboard</title>{% endblock %}
 
 {% block content %}
-    <section class="hero">
-        <h1>Hello, {{ current_user.username }}!</h1>
-        <p>Welcome back to your dashboard.</p>
-        <div style="margin-top: 2rem;">
-            <a href="{{ url_for('auth.profile') }}" class="btn btn-primary">View Profile</a>
-            <a href="{{ url_for('main.about') }}" class="btn btn-secondary">About</a>
+    <section class="dashboard">
+        <div class="dashboard-header">
+            <h1>Hello, {{ current_user.username }}!</h1>
+            <p>Welcome back to your dashboard.</p>
         </div>
+
+        <!-- Datasets Section -->
+        <section class="datasets-section">
+            <div class="section-header">
+                <h2>Your Datasets</h2>
+            </div>
+            
+            {% if datasets %}
+                <div class="datasets-grid">
+                    {% for dataset in datasets %}
+                        <div class="dataset-card">
+                            <h3>{{ dataset.label.name }}</h3>
+                            <p class="dataset-info">
+                                <span class="dataset-count">{{ dataset.rawdata.log_text|length }} entries</span>
+                                <span class="dataset-date">{{ dataset.created_at.strftime('%Y-%m-%d') }}</span>
+                            </p>
+                            <div class="dataset-actions">
+                                <a href="{{ url_for('main.download_dataset', dataset_id=dataset.id) }}" class="btn btn-secondary">Download CSV</a>
+                                <a href="{{ url_for('main.view_dataset', dataset_id=dataset.id) }}" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>You haven't created any datasets yet.</p>
+                    <p>Upload some raw data first to create datasets.</p>
+                </div>
+            {% endif %}
+        </section>
+
+        <!-- Raw Data Section -->
+        <section class="rawdata-section">
+            <div class="section-header">
+                <h2>Your Raw Data</h2>
+                <button class="btn btn-primary" id="addRawDataBtn">Add Raw Data</button>
+            </div>
+            
+            {% if rawdata %}
+                <div class="rawdata-list">
+                    {% for data in rawdata %}
+                        <div class="rawdata-item">
+                            <div class="rawdata-content">
+                                <p class="rawdata-preview">{{ data.log_text[:100] }}{% if data.log_text|length > 100 %}...{% endif %}</p>
+                                <span class="rawdata-source">{{ data.source or 'Unknown Source' }}</span>
+                                <span class="rawdata-date">{{ data.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                            </div>
+                            <div class="rawdata-actions">
+                                <a href="{{ url_for('main.create_dataset', rawdata_id=data.id) }}" class="btn btn-primary">Create Dataset</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>No raw data uploaded yet.</p>
+                    <p>Click "Add Raw Data" to upload your first dataset.</p>
+                </div>
+            {% endif %}
+        </section>
     </section>
 {% endblock %}
