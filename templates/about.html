@@ -1,28 +1,59 @@
 <!DOCTYPE html>
 {% extends "base.html" %}
 
-{% block title %}About - Flask App{% endblock %}
+{% block title %}Flask App - About{% endblock %}
 
 {% block content %}
     <section class="about">
         <h1>About Flask App</h1>
-        <p>This is a simple Flask application built as a foundation for web development projects.</p>
+        <p>This is a professional web application built with Flask, designed for serious business use.</p>
+        
+        <h2>Technical Stack</h2>
+        <p>The application uses enterprise-grade technologies:</p>
+        <ul>
+            <li><strong>Backend:</strong> Python with Flask framework</li>
+            <li><strong>Database:</strong> SQLite with SQLAlchemy ORM</li>
+            <li><strong>Frontend:</strong> HTML5, CSS3, and vanilla JavaScript</li>
+            <li><strong>Authentication:</strong> Secure session-based authentication</li>
+            <li><strong>Styling:</strong> Professional CSS with clean design</li>
+        </ul>
         
         <h2>Features</h2>
+        <p>The application includes enterprise features:</p>
         <ul>
-            <li>Simple and lightweight</li>
-            <li>Easy to extend and customize</li>
-            <li>RESTful API support</li>
-            <li>Template rendering with Jinja2</li>
-            <li>Static file serving</li>
+            <li><strong>User Authentication:</strong> Secure login and registration system</li>
+            <li><strong>RESTful API:</strong> JSON API endpoints for data access</li>
+            <li><strong>File Uploads:</strong> Secure file upload functionality</li>
+            <li><strong>Session Management:</strong> Server-side session handling</li>
+            <li><strong>Responsive Design:</strong> Mobile-friendly layout</li>
+        </ul>
+        
+        <h2>Security Features</h2>
+        <p>Security is implemented with enterprise standards:</p>
+        <ul>
+            <li><strong>Secure Password Storage:</strong> Passwords are hashed using bcrypt</li>
+            <li><strong>Session Security:</strong> Secure session management</li>
+            <li><strong>Input Validation:</strong> All user inputs are validated and sanitized</li>
+            <li><strong>CSRF Protection:</strong> Cross-site request forgery protection</li>
         </ul>
         
         <h2>Getting Started</h2>
-        <p>To run this application:</p>
+        <p>To get started with this application:</p>
         <ol>
-            <li>Install dependencies: <code>pip install -r requirements.txt</code></li>
-            <li>Run the app: <code>python app.py</code></li>
-            <li>Visit <a href="http://localhost:5000" target="_blank">http://localhost:5000</a></li>
+            <li><code>Register</code> a new account</li>
+            <li><code>Login</code> to access your profile</li>
+            <li><code>Explore</code> the API endpoints</li>
+            <li><code>Upload</code> files to test functionality</li>
         </ol>
+        
+        <h2>Future Enhancements</h2>
+        <p>Planned future enhancements include:</p>
+        <ul>
+            <li>Real-time notifications</li>
+            <li>Advanced user roles and permissions</li>
+            <li>Admin dashboard</li>
+            <li>Advanced analytics</li>
+            <li>Integration with third-party services</li>
+        </ul>
     </section>
 {% endblock %}

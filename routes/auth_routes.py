@@ -4,7 +4,7 @@ Authentication routes for user login and registration system.
 
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from database.models import User, get_db
-from auth import AuthRoutes, login_required
+from auth import AuthRoutes, login_required, SessionManager
 from config import SECRET_KEY
 
 # Create auth blueprint
@@ -65,7 +65,7 @@ def logout():
 @login_required
 def profile():
     """User profile route (protected)."""
-    user = AuthRoutes.get_current_user()
+    user = SessionManager.get_current_user()
     return render_template('auth/profile.html', user=user)
 
 # Add auth routes to main app

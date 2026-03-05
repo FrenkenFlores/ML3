@@ -1,22 +1,36 @@
 <!DOCTYPE html>
 {% extends "base.html" %}
 
-{% block title %}Profile - Flask App{% endblock %}
+{% block title %}Flask App - Profile{% endblock %}
 
 {% block content %}
-    <div class="profile-container">
-        <div class="profile-card">
-            <h1>User Profile</h1>
+    <section class="about" style="max-width: 500px; margin: 5rem auto;">
+        <h1>User Profile</h1>
+        <p>Welcome back, {{ current_user.username }}!</p>
+        
+        <div style="background: #fff; padding: 1.5rem; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 1.5rem; border: 1px solid #e1e4e8;">
+            <h2 style="color: #24292e; margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;">Account Information</h2>
             
-            <div class="profile-info">
-                <p><strong>Username:</strong> {{ user.username }}</p>
-                <p><strong>Email:</strong> {{ user.email }}</p>
-                <p><strong>User ID:</strong> {{ user.user_id }}</p>
+            <div style="margin-bottom: 1rem;">
+                <strong style="color: #24292e; display: block; margin-bottom: 0.25rem; font-size: 14px;">Username:</strong>
+                <span style="color: #0366d6; font-weight: 500; font-size: 14px;">{{ current_user.username }}</span>
             </div>
             
-            <div class="profile-actions">
-                <a href="{{ url_for('auth.logout') }}" class="btn btn-secondary">Logout</a>
+            <div style="margin-bottom: 1rem;">
+                <strong style="color: #24292e; display: block; margin-bottom: 0.25rem; font-size: 14px;">Email:</strong>
+                <span style="color: #0366d6; font-weight: 500; font-size: 14px;">{{ current_user.email }}</span>
+            </div>
+            
+            
+            <div style="margin-top: 1rem; text-align: right;">
+                <a href="{{ url_for('auth.logout') }}" style="background: #e1e4e8; color: #24292e; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-weight: 500; font-size: 14px; display: inline-block;">
+                    Sign out
+                </a>
             </div>
         </div>
-    </div>
+        
+        <div style="text-align: center; color: #586069; font-size: 14px;">
+            <p>Need help? Contact support at support@flaskapp.com</p>
+        </div>
+    </section>
 {% endblock %}

@@ -18,7 +18,7 @@
                 <a href="{{ url_for('auth.logout') }}">Logout</a>
             {% else %}
                 <a href="{{ url_for('auth.login') }}">Login</a>
-                <a href="{{ url_for('auth.register') }}">Register</a>
+                <a href="{{ url_for('auth.register') }}">Sign up</a>
             {% endif %}
         </nav>
     </header>
@@ -36,7 +36,7 @@
     </main>
     
     <footer>
-        <p>&copy; 2026 Flask App</p>
+        <p>&copy; 2026 Flask App - Built with GitHub style</p>
     </footer>
     
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>

@@ -1,38 +1,31 @@
 <!DOCTYPE html>
 {% extends "base.html" %}
 
-{% block title %}Login - Flask App{% endblock %}
+{% block title %}Flask App - Login{% endblock %}
 
 {% block content %}
-    <div class="auth-container">
-        <div class="auth-card">
-            <h1>Welcome Back</h1>
+    <section class="about" style="max-width: 400px; margin: 5rem auto;">
+        <h1>Sign in to Flask App</h1>
+        <p>Enter your credentials to access your account</p>
+        
+        <form method="POST" action="{{ url_for('auth.login') }}">
+            <div style="margin-bottom: 1rem;">
+                <label for="email" style="display: block; margin-bottom: 0.5rem; color: #24292e; font-weight: 600;">Email address</label>
+                <input type="text" id="email" name="email" required
+                       style="width: 100%; padding: 0.5rem; border: 1px solid #e1e4e8; border-radius: 6px; font-size: 14px; transition: border-color 0.2s ease;">
+            </div>
             
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
+            <div style="margin-bottom: 1rem;">
+                <label for="password" style="display: block; margin-bottom: 0.5rem; color: #24292e; font-weight: 600;">Password</label>
+                <input type="password" id="password" name="password" required
+                       style="width: 100%; padding: 0.5rem; border: 1px solid #e1e4e8; border-radius: 6px; font-size: 14px; transition: border-color 0.2s ease;">
+            </div>
             
-            <form method="POST" action="">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                
-                <button type="submit" class="btn btn-primary">Login</button>
-            </form>
-            
-            <p class="auth-link">
-                Don't have an account? <a href="{{ url_for('auth.register') }}">Register here</a>
-            </p>
-        </div>
-    </div>
+            <button type="submit" style="width: 100%; padding: 0.75rem; font-size: 14px; font-weight: 600; background: #0366d6; color: white; border: none; border-radius: 6px; cursor: pointer;">Sign in</button>
+        </form>
+        
+        <p style="margin-top: 1.5rem; text-align: center; color: #586069; font-size: 14px;">
+            New to Flask App? <a href="{{ url_for('auth.register') }}" style="color: #0366d6; text-decoration: none; font-weight: 500;">Create an account</a>
+        </p>
+    </section>
 {% endblock %}
